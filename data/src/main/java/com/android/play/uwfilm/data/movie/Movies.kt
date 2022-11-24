@@ -1,28 +1,51 @@
 package com.android.play.uwfilm.data.movie
 
 import android.util.Log
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 
 class Movies {
+
+    interface FetchCallback {
+        fun onResponse(response: String)
+        fun onFailure(error: Exception)
+    }
+
     // https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20221120
-    fun fetchList(): MutableList<String> {
-        var client = Retrofit.Builder()
-            .baseUrl("https://kobis.or.kr/")
-            .addConverterFactory(ScalarsConverterFactory.create())
+    fun fetchList(callback: FetchCallback): MutableList<String> {
+
+        var logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .addNetworkInterceptor(logging)
             .build()
 
-        client.create(MovieServiceApi::class.java).fetch("/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20221120").enqueue(object: Callback<String> {
+        var retrofit = Retrofit.Builder()
+            .baseUrl("https://kobis.or.kr/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .client(client)
+            .build()
+
+        retrofit.create(MovieServiceApi::class.java).fetch("/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20221120").enqueue(object: Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.e("onResponse", response.body()?: response.toString())
+                response.body()?.let {
+                    callback.onResponse(it)
+                }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                TODO("Not yet implemented")
-                Log.e("onFailure", t.message ?: "")
+                callback.onFailure(t as Exception)
             }
 
         })

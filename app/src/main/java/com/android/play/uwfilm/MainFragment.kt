@@ -21,27 +21,17 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val binding: FragmentMainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         lifecycleScope.launch {
             try {
-                // NOW PLAYING
-                // OPENING THIS WEEK
-                // COMING SOON
-                var movies = mutableListOf<String>()
-
-                var content = Movies().fetchNowPlayingList() // fetchComingSoonList, fetchOpeningThisWeek
-                var json = JSONObject(content)
-                var jsonarr = json.getJSONObject("boxOfficeResult").getJSONArray("dailyBoxOfficeList")
-                for (i in 0 until jsonarr.length()) {
-                    var moveName = (jsonarr[i] as JSONObject)["movieNm"] as String
-                    movies.add(moveName)
-                }
-                binding.movies.adapter = MovieAdapter(movies)
+                binding.movies.adapter = MovieAdapter(Movies().fetchNowPlayingList()) // fetchComingSoonList, fetchOpeningThisWeek
             } catch (e: Exception) {
                 Log.e("Exception", "Exception==>$e")
             }
         }
+
         return binding.root
     }
 }

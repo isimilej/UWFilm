@@ -6,7 +6,7 @@ interface MovieDataSource {
     suspend fun fetchNowPlayingList(date: String): List<Movie>
 }
 
-data class Movie(val title: String)
+data class Movie(val ranking: Int, val code: String, val title: String)
 
 class Movies {
 

@@ -1,8 +1,14 @@
 package com.android.play.uwfilm.data.movie.datasource
 
+import android.util.Log
 import com.android.play.uwfilm.data.movie.Movie
 import com.android.play.uwfilm.data.movie.MovieDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import org.jsoup.Connection
+import org.jsoup.Jsoup
+
 
 class KobisMovieDataSource : MovieDataSource {
 
@@ -40,5 +46,29 @@ class KobisMovieDataSource : MovieDataSource {
             movies.add(Movie(ranking = rank, code = code, title = moveName))
         }
         return movies
+    }
+
+    override suspend fun fetchMovieInformation(movieCode: String): String {
+
+        var thumb = ""
+
+        //Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+        // 전송할 폼 데이터
+        // 전송할 폼 데이터
+        withContext(Dispatchers.IO) {
+            val data: MutableMap<String, String> = HashMap()
+            data["code"] = movieCode
+            var response =
+                Jsoup.connect("https://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieDtl.do")
+                    .data(data)
+                    .method(Connection.Method.POST).execute()
+
+            //ovf info info1
+            var document = response.parse()
+            var url = document.select(".ovf.info.info1").select("img").attr("src")
+            Log.e("", "RESPONSE=https://www.kobis.or.kr${url}")
+            thumb = "https://www.kobis.or.kr${url}"
+        }
+        return thumb
     }
 }

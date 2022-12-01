@@ -14,6 +14,13 @@
             android:layout_height="match_parent"
             android:text="Hello!!"
             android:gravity="center" />
+        
+        <ImageView
+            android:id="@+id/thumb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

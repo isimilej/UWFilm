@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.play.uwfilm.data.movie.Movies
 import com.android.play.uwfilm.databinding.FragmentDetailBinding
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
 class DetailFragment(val movieCode: String) : Fragment() {
@@ -24,6 +25,8 @@ class DetailFragment(val movieCode: String) : Fragment() {
         lifecycleScope.launch {
             var content = Movies().fetchMovieInformation(movieCode)
             Log.e("DETAIL", "CONTENT=$content")
+
+            Glide.with(this@DetailFragment).load(content).into(binding.thumb)
         }
         return binding.root
     }

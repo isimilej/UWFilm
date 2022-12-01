@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.play.uwfilm.data.movie.Movie
 import com.android.play.uwfilm.databinding.ItemMovieBinding
+import com.bumptech.glide.Glide
 
 class MovieAdapter(private var items: List<Movie>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -36,6 +37,7 @@ class MovieAdapter(private var items: List<Movie>) : RecyclerView.Adapter<MovieA
 
     inner class ViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Movie) {
+            Glide.with(binding.root).load(item.thumb).into(binding.thumb)
             binding.title.text = item.title
             binding.ranking.text = item.ranking.toString()
             binding.root.setOnClickListener {

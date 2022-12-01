@@ -29,10 +29,11 @@ class KobisMovieDataSource : MovieDataSource {
 //            "audiCnt": "353274", // 해당일의 관객수를 출력합니다.
 //            "audiInten": "-60106", // 전일 대비 관객수 증감분을 출력합니다.
 //            "audiChange": "-14.5", // 전일 대비 관객수 증감 비율을 출력합니다.
-//            "audiAcc": "5328435", // 누적관객수를 출력합니다.
+//            "audiAcc": "5328435", // 누적관객수를 출력합니다. - "openDt": "2011-12-15", audience, accumulate
 //            "scrnCnt": "697", // 해당일자에 상영한 스크린수를 출력합니다.
 //            "showCnt": "3223" // 해당일자에 상영된 횟수를 출력합니다.
 //        } ]
+
     override suspend fun fetchNowPlayingList(date: String): List<Movie> {
         var movies = mutableListOf<Movie>()
         val response = KobisDataSourceProvider.provideApi<KobisMovieServiceApi>().fetch(date)

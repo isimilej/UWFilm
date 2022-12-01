@@ -28,6 +28,7 @@ class DetailFragment(val movieCode: String) : Fragment() {
 
             Glide.with(this@DetailFragment).load(content).into(binding.thumb)
         }
+
         return binding.root
     }
 }

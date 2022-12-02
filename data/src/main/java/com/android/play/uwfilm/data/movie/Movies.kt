@@ -5,6 +5,7 @@ import com.android.play.uwfilm.data.movie.datasource.KobisMovieDataSource
 interface MovieDataSource {
     suspend fun fetchNowPlayingList(date: String): List<Movie>
     suspend fun fetchMovieInformation(movieCode: String): String
+    suspend fun fetchComingSoonList(): List<Movie>
 }
 
 data class Movie(val code: String,
@@ -28,4 +29,7 @@ class Movies {
     suspend fun fetchMovieInformation(movieCode: String): String {
         return dataSource.fetchMovieInformation(movieCode)
     }
+
+    suspend fun fetchComingSoonList(): List<Movie> = dataSource.fetchComingSoonList()
+
 }

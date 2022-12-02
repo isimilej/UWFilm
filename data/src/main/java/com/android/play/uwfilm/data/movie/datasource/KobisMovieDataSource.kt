@@ -72,4 +72,6 @@ class KobisMovieDataSource : MovieDataSource {
         }
         return thumb
     }
+
+    override suspend fun fetchComingSoonList(): List<Movie> = mutableListOf()
 }

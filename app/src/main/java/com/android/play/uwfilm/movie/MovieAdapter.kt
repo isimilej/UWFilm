@@ -37,9 +37,8 @@ class MovieAdapter(private var items: List<Movie>) : RecyclerView.Adapter<MovieA
 
     inner class ViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Movie) {
+            binding.boxoffice = item
             Glide.with(binding.root).load(item.thumb).into(binding.thumb)
-            binding.title.text = item.title
-            binding.ranking.text = item.ranking.toString()
             binding.root.setOnClickListener {
                 Log.e("", "Clicked!!")
                 itemClickListener?.let {
@@ -48,6 +47,10 @@ class MovieAdapter(private var items: List<Movie>) : RecyclerView.Adapter<MovieA
                 // change select item..
             }
         }
+    }
+
+    fun onClickItem(movie: Movie) {
+
     }
 
 }

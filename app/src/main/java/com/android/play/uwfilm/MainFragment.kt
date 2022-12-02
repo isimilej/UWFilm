@@ -1,18 +1,17 @@
 package com.android.play.uwfilm
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.android.play.uwfilm.data.movie.Movie
-import com.android.play.uwfilm.data.movie.Movies
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.android.play.uwfilm.databinding.FragmentMainBinding
-import com.android.play.uwfilm.movie.MovieAdapter
-import kotlinx.coroutines.launch
+import com.android.play.uwfilm.movie.BoxOfficeFragment
+import com.android.play.uwfilm.movie.ComingSoonFragment
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment : Fragment() {
 
@@ -24,37 +23,24 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        binding.pager.adapter = PagerAdapter(requireActivity())
 
-        var adapter = MovieAdapter(mutableListOf())
-        adapter.setItemClickListener { movieCode ->
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DetailFragment(movieCode), null)
-                .addToBackStack(null)
-                .commit()
-        }
-        binding.movies.adapter = adapter
-
-        lifecycleScope.launch {
-            try {
-                Log.e("AA", "[AA]--1")
-                var movies = Movies().fetchNowPlayingList()
-                adapter.update(movies)
-
-                Log.e("AA", "[AA]--2")
-
-                for (movie in movies) {
-                    Log.e("AA", "[AA]--3")
-                    var url = Movies().fetchMovieInformation(movie.code)
-                    movie.thumb = url
-                    Log.e("", "Thumb, URL=$url")
-                    Log.e("AA", "[AA]--4")
-                    adapter.notifyDataSetChanged()
-                }
-            } catch (e: Exception) {
-                Log.e("Exception", "Exception==>$e")
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "BOX OFFICE"
+                else -> "COMING SOON"
             }
-        }
-        Log.e("AA", "[AA]--00")
+        }.attach()
+
+        binding.pager.isUserInputEnabled = false
         return binding.root
+    }
+
+    private inner class PagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = 2
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0 -> BoxOfficeFragment()
+            else -> ComingSoonFragment()
+        }
     }
 }

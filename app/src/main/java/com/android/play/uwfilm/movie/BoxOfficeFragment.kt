@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.android.play.uwfilm.DetailFragment
 import com.android.play.uwfilm.R
 import com.android.play.uwfilm.data.movie.Movies
 import com.android.play.uwfilm.databinding.FragmentBoxOfficeBinding
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class BoxOfficeFragment : Fragment() {
 
@@ -36,12 +37,14 @@ class BoxOfficeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                var movies = Movies().fetchNowPlayingList()
-                adapter.update(movies)
+                // FIXME: 오전, 몇시 부터 전날 데이터를 이용할 수 있는가???
+                val date = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+                var boxOfficeList = Movies().fetchDailyBoxOfficeList(date)
+                adapter.update(boxOfficeList)
 
-                for (movie in movies) {
-                    var url = Movies().fetchMovieInformation(movie.code)
-                    movie.thumb = url
+                for (boxOffice in boxOfficeList) {
+                    var movie = Movies().fetchMovieInformation(boxOffice.code)
+                    boxOffice.thumb = movie.thumb
                     adapter.notifyDataSetChanged()
                 }
             } catch (e: Exception) {

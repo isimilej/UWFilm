@@ -1,4 +1,4 @@
-package com.android.play.uwfilm
+package com.android.play.uwfilm.movie
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.android.play.uwfilm.R
 import com.android.play.uwfilm.data.movie.Movies
 import com.android.play.uwfilm.databinding.FragmentDetailBinding
 import com.bumptech.glide.Glide
@@ -19,16 +20,14 @@ class DetailFragment(val movieCode: String) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        binding.movieCode.text = movieCode
+        val binding: FragmentDetailBinding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_detail, container, false)
 
         lifecycleScope.launch {
-            var content = Movies().fetchMovieInformation(movieCode)
-            Log.e("DETAIL", "CONTENT=$content")
-
-            Glide.with(this@DetailFragment).load(content).into(binding.thumb)
+            var movie = Movies().fetchMovieInformation(movieCode)
+            Glide.with(this@DetailFragment).load(movie.thumb).into(binding.thumb)
+            binding.synopsis.text = movie.synopsis
         }
-
         return binding.root
     }
 }

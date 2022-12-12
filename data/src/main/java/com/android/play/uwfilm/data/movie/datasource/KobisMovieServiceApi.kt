@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface KobisMovieServiceApi {
     @GET("/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json")
-    suspend fun fetch(@Query("targetDt") date: String = "20221128"): Response<String>
+    suspend fun fetchDailyBoxOfficeList(@Query("targetDt") date: String): Response<String>
 
     @GET("/kobisopenapi/webservice/rest/movie/searchMovieInfo.json")
     suspend fun fetchMovieInformation(@Query("movieCd") movieCode: String): Response<String>

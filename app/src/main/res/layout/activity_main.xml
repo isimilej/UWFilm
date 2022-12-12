@@ -6,11 +6,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".main.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
-            android:name="com.android.play.uwfilm.MainFragment"
+            android:name="com.android.play.uwfilm.main.MainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

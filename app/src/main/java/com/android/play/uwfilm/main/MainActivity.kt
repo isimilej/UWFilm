@@ -1,8 +1,8 @@
-package com.android.play.uwfilm
+package com.android.play.uwfilm.main
 
 import android.os.Bundle
-import android.widget.Toast
-import com.android.play.uwfilm.data.Films
+import com.android.play.uwfilm.BaseActivity
+import com.android.play.uwfilm.R
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="boxoffice"
-            type="com.android.play.uwfilm.data.movie.Movie" />
+            type="com.android.play.uwfilm.data.movie.BoxOffice" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

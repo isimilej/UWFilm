@@ -7,6 +7,7 @@
         <variable
             name="boxoffice"
             type="com.android.play.uwfilm.data.movie.BoxOffice" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +35,7 @@
             android:shadowDx="1.0"
             android:shadowDy="1.0"
             android:gravity="start|center_vertical"
-            android:text="@{Integer.toString(boxoffice.ranking)}"
+            android:text="@{boxoffice.ranking}"
             android:textColor="#ffffff"
             android:textSize="42dp"
             android:textStyle="bold|italic"

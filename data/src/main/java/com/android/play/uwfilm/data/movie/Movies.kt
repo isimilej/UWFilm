@@ -3,13 +3,13 @@ package com.android.play.uwfilm.data.movie
 import com.android.play.uwfilm.data.movie.datasource.KobisMovieDataSource
 
 interface MovieDataSource {
-    suspend fun fetchDailyBoxOfficeList(date: String): ArrayList<BoxOffice>
+    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>>
     suspend fun fetchMovieInformation(movieCode: String): Movie
     suspend fun fetchComingSoonList(): List<BoxOffice>
 }
 
 data class BoxOffice(val code: String,
-                     val ranking: Int,
+                     val ranking: String,
                      val title: String,
                      val genre: String = "코미디, 드라마",
                      val openDate: String = "2011-11-30",
@@ -24,12 +24,8 @@ class Movies {
         KobisMovieDataSource()
     }
 
-    suspend fun fetchDailyBoxOfficeList(date: String): ArrayList<BoxOffice> {
-        return try {
-            dataSource.fetchDailyBoxOfficeList(date)
-        } catch (e: Exception) {
-            arrayListOf()
-        }
+    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
+        return dataSource.fetchDailyBoxOfficeList(date)
     }
 
     suspend fun fetchMovieInformation(movieCode: String): Movie {

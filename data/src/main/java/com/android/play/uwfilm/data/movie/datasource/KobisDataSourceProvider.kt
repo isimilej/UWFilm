@@ -1,9 +1,8 @@
 package com.android.play.uwfilm.data.movie.datasource
 
-import okhttp3.HttpUrl
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -13,6 +12,13 @@ const val KOBIS_API_KEY = "edccb79956300fa2e4465b09cf51fe25"
 
 object KobisDataSourceProvider {
 
+    private val customJson = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true // data class 기본값 적용
+        isLenient = true
+        coerceInputValues = true
+    }
+
     inline fun <reified T> provideApi(): T {
         return retrofit.create(T::class.java)
     }
@@ -20,7 +26,13 @@ object KobisDataSourceProvider {
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://kobis.or.kr/")
+            .addCallAdapterFactory(KobisCallAdapter.Factory())
             .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(Json {
+                isLenient = true // Json 큰따옴표 느슨하게 체크.
+                ignoreUnknownKeys = true // Field 값이 없는 경우 무시
+                coerceInputValues = true // "null" 이 들어간경우 default Argument 값으로 대체
+            }.asConverterFactory(MediaType.get("application/json")))
             .client(okHttpClient)
             .build()
     }

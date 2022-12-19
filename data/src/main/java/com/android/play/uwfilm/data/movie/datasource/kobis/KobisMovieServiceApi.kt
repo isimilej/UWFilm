@@ -1,6 +1,6 @@
-package com.android.play.uwfilm.data.movie.datasource
+package com.android.play.uwfilm.data.movie.datasource.kobis
 
-import com.android.play.uwfilm.data.movie.datasource.dto.DailyBoxOfficeResult
+import com.android.play.uwfilm.data.movie.datasource.kobis.dto.DailyBoxOfficeResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

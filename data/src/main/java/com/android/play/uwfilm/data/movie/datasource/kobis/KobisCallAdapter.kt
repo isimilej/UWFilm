@@ -1,4 +1,4 @@
-package com.android.play.uwfilm.data.movie.datasource
+package com.android.play.uwfilm.data.movie.datasource.kobis
 
 import retrofit2.Call
 import retrofit2.CallAdapter

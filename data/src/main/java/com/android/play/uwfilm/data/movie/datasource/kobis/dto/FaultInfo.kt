@@ -1,4 +1,4 @@
-package com.android.play.uwfilm.data.movie.datasource.dto
+package com.android.play.uwfilm.data.movie.datasource.kobis.dto
 
 import kotlinx.serialization.Serializable
 

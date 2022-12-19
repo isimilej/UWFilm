@@ -1,9 +1,10 @@
-package com.android.play.uwfilm.data.movie.datasource
+package com.android.play.uwfilm.data.movie.datasource.kobis
 
 import android.util.Log
 import com.android.play.uwfilm.data.movie.BoxOffice
 import com.android.play.uwfilm.data.movie.Movie
 import com.android.play.uwfilm.data.movie.MovieDataSource
+import com.android.play.uwfilm.data.movie.Trailer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
@@ -36,6 +37,7 @@ class KobisMovieDataSource : MovieDataSource {
 
         var thumb = ""
         var synopsis = ""
+        var movieName = ""
 
         //Content-Type: application/x-www-form-urlencoded; charset=UTF-8
         // 전송할 폼 데이터
@@ -52,6 +54,8 @@ class KobisMovieDataSource : MovieDataSource {
             var document = response.parse()
             var url = document.select(".ovf.info.info1").select("img").attr("src")
 
+            movieName = document.select(".hd_layer").select(".tit").text()
+
             var content = document.select(".item_tab.basic").select(".ovf.info.info1").select(".ovf.cont").select("dd")
             Log.e("", "코드=${content[0].text()}")
             Log.e("", "ISAN=${content[1].text()}")
@@ -60,7 +64,9 @@ class KobisMovieDataSource : MovieDataSource {
             Log.e("", "개봉일=${content[4].text()}")
             Log.e("", "제작연도=${content[5].text()}")
             Log.e("", "제작상태=${content[6].text()}")
+//            movieName = content[2].text()
 
+            // get steal thumbnail.
             var imgs = document.select(".item_tab.basic").select(".info.info2")[1].select(".thumb_slide").select("img")//.attr("src")
             for (img in imgs) {
                 Log.e("", "THUMB==https://www.kobis.or.kr${img.attr("src")}")
@@ -83,7 +89,7 @@ class KobisMovieDataSource : MovieDataSource {
             // thumb_x132
         }
 
-        return Movie(code = movieCode, thumb = thumb, synopsis = synopsis)
+        return Movie(code = movieCode, name = movieName, thumb = thumb, synopsis = synopsis)
     }
 
     override suspend fun fetchComingSoonList(): List<BoxOffice> = mutableListOf()
@@ -92,7 +98,11 @@ class KobisMovieDataSource : MovieDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun search(movieName: String) {
+    override suspend fun search(movieName: String): Result<Movie> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun fetchVideos(movieCode: String): Result<Trailer> {
         TODO("Not yet implemented")
     }
 }

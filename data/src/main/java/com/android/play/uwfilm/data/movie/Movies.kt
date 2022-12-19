@@ -1,14 +1,15 @@
 package com.android.play.uwfilm.data.movie
 
-import com.android.play.uwfilm.data.movie.datasource.KobisMovieDataSource
-import com.android.play.uwfilm.data.movie.datasource.TmdbDataSource
+import com.android.play.uwfilm.data.movie.datasource.kobis.KobisMovieDataSource
+import com.android.play.uwfilm.data.movie.datasource.tmdb.TmdbDataSource
 
 interface MovieDataSource {
     suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>>
     suspend fun fetchMovieInformation(movieCode: String): Movie
     suspend fun fetchComingSoonList(): List<BoxOffice>
     suspend fun fetchDetail(movieCode: String): Unit
-    suspend fun search(movieName: String): Unit
+    suspend fun search(movieName: String): Result<Movie>
+    suspend fun fetchVideos(movieCode: String): Result<Trailer>
 }
 
 data class BoxOffice(val code: String,
@@ -19,7 +20,7 @@ data class BoxOffice(val code: String,
                      val grade: String = "12세이상관람가",
                      var thumb: String = "https://www.kobis.or.kr/common/mast/movie/2022/11/thumb_x192/thn_ae69c79963c64a358013ccb42299a143.jpg")
 
-data class Movie(val code: String, val thumb: String, val synopsis: String)
+data class Movie(val code: String, val name: String, val thumb: String, val synopsis: String)
 
 class Movies {
 
@@ -43,8 +44,12 @@ class Movies {
         theMovieDbDataSource.fetchDetail(movieCode)
     }
 
-    suspend fun search(movieName: String): Unit {
-        theMovieDbDataSource.search(movieName)
+    suspend fun search(movieName: String): Result<Movie> {
+        return theMovieDbDataSource.search(movieName)
+    }
+
+    suspend fun fetchVideos(movieCode: String): Result<Trailer> {
+        return theMovieDbDataSource.fetchVideos(movieCode)
     }
 
     suspend fun fetchComingSoonList(): List<BoxOffice> = dataSource.fetchComingSoonList()

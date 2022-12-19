@@ -36,6 +36,11 @@ class BoxOfficeFragment : Fragment() {
         }
         binding.boxOffices.adapter = adapter
 
+
+        binding.refreshLayout.setOnRefreshListener {
+            binding.refreshLayout.isRefreshing = false
+        }
+
         lifecycleScope.launch {
             try {
                 // FIXME: 오전, 몇시 부터 전날 데이터를 이용할 수 있는가???

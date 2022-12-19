@@ -1,11 +1,14 @@
 package com.android.play.uwfilm.data.movie
 
 import com.android.play.uwfilm.data.movie.datasource.KobisMovieDataSource
+import com.android.play.uwfilm.data.movie.datasource.TmdbDataSource
 
 interface MovieDataSource {
     suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>>
     suspend fun fetchMovieInformation(movieCode: String): Movie
     suspend fun fetchComingSoonList(): List<BoxOffice>
+    suspend fun fetchDetail(movieCode: String): Unit
+    suspend fun search(movieName: String): Unit
 }
 
 data class BoxOffice(val code: String,
@@ -24,12 +27,24 @@ class Movies {
         KobisMovieDataSource()
     }
 
+    private val theMovieDbDataSource: MovieDataSource by lazy {
+        TmdbDataSource()
+    }
+
     suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
         return dataSource.fetchDailyBoxOfficeList(date)
     }
 
     suspend fun fetchMovieInformation(movieCode: String): Movie {
         return dataSource.fetchMovieInformation(movieCode)
+    }
+
+    suspend fun fetchDetail(movieCode: String): Unit {
+        theMovieDbDataSource.fetchDetail(movieCode)
+    }
+
+    suspend fun search(movieName: String): Unit {
+        theMovieDbDataSource.search(movieName)
     }
 
     suspend fun fetchComingSoonList(): List<BoxOffice> = dataSource.fetchComingSoonList()

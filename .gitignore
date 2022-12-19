@@ -41,3 +41,6 @@ output.json
 .idea/gradle.xml
 .idea/jarRepositories.xml
 .idea/navEditor.xml
+
+# Configuration File
+Configuration.kt

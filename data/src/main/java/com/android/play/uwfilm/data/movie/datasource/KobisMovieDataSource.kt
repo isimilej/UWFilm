@@ -63,8 +63,13 @@ class KobisMovieDataSource : MovieDataSource {
 
             var imgs = document.select(".item_tab.basic").select(".info.info2")[1].select(".thumb_slide").select("img")//.attr("src")
             for (img in imgs) {
-                Log.e("", "THUMB==${img.attr("src")}")
+                Log.e("", "THUMB==https://www.kobis.or.kr${img.attr("src")}")
             }
+            //https://img.cgv.co.kr/movie/thumbnail/trailer/83203/83203210449_1024.jpg
+            //http://h.vod.cgv.co.kr/vodCGVa/86072/86072_210699_1200_128_960_540.mp4
+
+            // the movie db api call.
+            //https://api.themoviedb.org/3/movie/330457/videos?api_key=60fcc7db80231ef54bab033efc555827
 
             synopsis = document.select(".item_tab.basic").select(".info.info2").select(".desc_info")[0].text()
             //오직 목소리 하나로 전 세계를 사로잡은 디바 ‘우타’. 그녀가 모습을 드러내는 첫 라이브 콘서트가 음악의 섬 ‘엘레지아’에서 열리고 ‘루피’가 이끄는 밀짚모자 해적단과 함께 수많은 ‘우타’ 팬들로 공연장은 가득 찬다. 그리고 이 콘서트를 둘러싼 해적들과 해군들의 수상한 움직임이 시작되는데… 드디어 전세계가 애타게 기다리던 ‘우타’의 등장과 함께 노래가 울려 퍼지고, 그녀가 ‘샹크스의 딸’이라는 충격적인 사실이 드러난다. ‘루피’, ‘우타’, ‘샹크스’, 세 사람의 과거가 그녀의 노랫소리와 함께 밝혀진다!
@@ -82,4 +87,12 @@ class KobisMovieDataSource : MovieDataSource {
     }
 
     override suspend fun fetchComingSoonList(): List<BoxOffice> = mutableListOf()
+
+    override suspend fun fetchDetail(movieCode: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun search(movieName: String) {
+        TODO("Not yet implemented")
+    }
 }

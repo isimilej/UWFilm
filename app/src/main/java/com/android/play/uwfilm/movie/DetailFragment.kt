@@ -27,6 +27,10 @@ class DetailFragment(val movieCode: String) : Fragment() {
             var movie = Movies().fetchMovieInformation(movieCode)
             Glide.with(this@DetailFragment).load(movie.thumb).into(binding.thumb)
             binding.synopsis.text = movie.synopsis
+
+//            Movies().fetchDetail("550")
+
+            Movies().search("아바타")
         }
         return binding.root
     }

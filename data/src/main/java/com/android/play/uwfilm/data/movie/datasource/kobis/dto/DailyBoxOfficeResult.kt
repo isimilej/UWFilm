@@ -31,7 +31,7 @@ data class DailyBoxOfficeResult (
         val audiCnt: String = "", // 해당일의 관객수. "353274"
         val audiInten: String = "", // 전일 대비 관객수 증감분. "-60106"
         val audiChange: String = "", // 전일 대비 관객수 증감 비율. "-14.5"
-        val audiAcc: String = "", // 누적 관객수. "5328435"
+        val audiAcc: String = "", // 누적 관객수. "5328435" - cumulative audience
         val scrnCnt: String = "", // 해당일자에 상영한 스크린 수. "697"
         val showCnt: String = "", // 해당 일자에 사영된 횟수. "3223"
     )

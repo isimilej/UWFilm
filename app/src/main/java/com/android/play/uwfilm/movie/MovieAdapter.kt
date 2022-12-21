@@ -4,9 +4,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.play.uwfilm.data.movie.BoxOffice
+import com.android.play.uwfilm.data.movie.entity.BoxOffice
 import com.android.play.uwfilm.databinding.ItemMovieBinding
-import com.bumptech.glide.Glide
 
 class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -38,7 +37,7 @@ class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<Mo
     inner class ViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BoxOffice) {
             binding.boxoffice = item
-            Glide.with(binding.root).load(item.thumb).into(binding.thumb)
+//            Glide.with(binding.root).load(item.thumb).into(binding.thumb)
             binding.root.setOnClickListener {
                 Log.e("", "Clicked!!")
                 itemClickListener?.let {

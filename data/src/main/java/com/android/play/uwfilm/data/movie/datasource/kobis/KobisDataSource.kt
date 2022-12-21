@@ -1,36 +1,45 @@
 package com.android.play.uwfilm.data.movie.datasource.kobis
 
 import android.util.Log
-import com.android.play.uwfilm.data.movie.BoxOffice
-import com.android.play.uwfilm.data.movie.Movie
 import com.android.play.uwfilm.data.movie.MovieDataSource
 import com.android.play.uwfilm.data.movie.Trailer
+import com.android.play.uwfilm.data.movie.entity.BoxOffice
+import com.android.play.uwfilm.data.movie.entity.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class KobisMovieDataSource : MovieDataSource {
+class KobisDataSource : MovieDataSource {
 
-    private val service: KobisMovieServiceApi by lazy {
+    private val service: KobisServiceApi by lazy {
         KobisDataSourceProvider.provideApi()
     }
 
     override suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
-        service.fetchDailyBoxOfficeList(date).onSuccess { response ->
-            response.faultInfo?.let {
+        var response = service.fetchDailyBoxOfficeList(date).onFailure {
+            return Result.failure(it)
+        }
+
+        val boxOfficeList = mutableListOf<BoxOffice>()
+        response.getOrNull()?.let { result ->
+            result.faultInfo?.let {
                 return Result.failure(IllegalStateException("Fault info: ${it.errorCode}, ${it.message}"))
             }
-
-            val boxOfficeList = arrayListOf<BoxOffice>()
-            response.boxOfficeResult?.dailyBoxOfficeList?.forEach {
-                boxOfficeList.add(BoxOffice(code = it.movieCd, ranking = it.rank, title = it.movieNm))
+            result.boxOfficeResult?.dailyBoxOfficeList?.forEach {
+                boxOfficeList.add(BoxOffice(
+                    code = it.movieCd,
+                    ranking = it.rank,
+                    title = it.movieNm,
+                    isNew = ("NEW" == it.rankOldAndNew),
+                    rankingIncrement = it.rankInten.toInt(),
+                    audienceCount = it.audiAcc.toInt(),
+                    openDate = it.openDt,
+                ))
             }
-            return Result.success(boxOfficeList)
-        }.onFailure { e ->
-            return Result.failure(e)
         }
-        return Result.failure(IllegalStateException("Reached.. End of function"))
+
+        return Result.success(boxOfficeList)
     }
 
     override suspend fun fetchMovieInformation(movieCode: String): Movie {

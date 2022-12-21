@@ -1,6 +1,7 @@
 package com.android.play.uwfilm.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.android.play.uwfilm.R
+import com.android.play.uwfilm.data.movie.entity.BoxOffice
 import com.android.play.uwfilm.databinding.FragmentMainBinding
 import com.android.play.uwfilm.movie.BoxOfficeFragment
 import com.android.play.uwfilm.movie.ComingSoonFragment
@@ -39,6 +41,6 @@ class MainFragment : Fragment() {
 
     private inner class PagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = 2
-        override fun createFragment(position: Int): Fragment = if (position == 0) BoxOfficeFragment() else ComingSoonFragment()
+        override fun createFragment(position: Int) = if (position == 0) BoxOfficeFragment() else ComingSoonFragment()
     }
 }

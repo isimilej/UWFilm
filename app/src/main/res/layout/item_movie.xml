@@ -6,7 +6,7 @@
     <data>
         <variable
             name="boxoffice"
-            type="com.android.play.uwfilm.data.movie.BoxOffice" />
+            type="com.android.play.uwfilm.data.movie.entity.BoxOffice" />
 
     </data>
 
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 tools:text="ALL"
-                android:text="@{boxoffice.genre}"
+                android:text=""
                 app:layout_constraintStart_toEndOf="@id/thumb_card"
                 app:layout_constraintTop_toBottomOf="@id/title"/>
 

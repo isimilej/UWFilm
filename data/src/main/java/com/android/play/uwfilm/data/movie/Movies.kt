@@ -1,7 +1,11 @@
 package com.android.play.uwfilm.data.movie
 
-import com.android.play.uwfilm.data.movie.datasource.kobis.KobisMovieDataSource
+import com.android.play.uwfilm.data.movie.datasource.kobis.KobisDataSource
 import com.android.play.uwfilm.data.movie.datasource.tmdb.TmdbDataSource
+import com.android.play.uwfilm.data.movie.entity.BoxOffice
+import com.android.play.uwfilm.data.movie.entity.Movie
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 interface MovieDataSource {
     suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>>
@@ -12,20 +16,11 @@ interface MovieDataSource {
     suspend fun fetchVideos(movieCode: String): Result<Trailer>
 }
 
-data class BoxOffice(val code: String,
-                     val ranking: String,
-                     val title: String,
-                     val genre: String = "코미디, 드라마",
-                     val openDate: String = "2011-11-30",
-                     val grade: String = "12세이상관람가",
-                     var thumb: String = "https://www.kobis.or.kr/common/mast/movie/2022/11/thumb_x192/thn_ae69c79963c64a358013ccb42299a143.jpg")
-
-data class Movie(val code: String, val name: String, val thumb: String, val synopsis: String)
 
 class Movies {
 
     private val dataSource: MovieDataSource by lazy {
-        KobisMovieDataSource()
+        KobisDataSource()
     }
 
     private val theMovieDbDataSource: MovieDataSource by lazy {
@@ -34,6 +29,11 @@ class Movies {
 
     suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
         return dataSource.fetchDailyBoxOfficeList(date)
+    }
+
+    suspend fun fetchDailyBoxOfficeList(): Result<List<BoxOffice>> {
+        val yesterday = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        return dataSource.fetchDailyBoxOfficeList(yesterday)
     }
 
     suspend fun fetchMovieInformation(movieCode: String): Movie {

@@ -1,9 +1,9 @@
 package com.android.play.uwfilm.data.movie.datasource.tmdb
 
-import com.android.play.uwfilm.data.movie.BoxOffice
-import com.android.play.uwfilm.data.movie.Movie
 import com.android.play.uwfilm.data.movie.MovieDataSource
 import com.android.play.uwfilm.data.movie.Trailer
+import com.android.play.uwfilm.data.movie.entity.BoxOffice
+import com.android.play.uwfilm.data.movie.entity.Movie
 
 class TmdbDataSource: MovieDataSource {
 

@@ -1,13 +1,20 @@
 package com.android.play.uwfilm.data.movie.datasource.kobis
 
 import com.android.play.uwfilm.data.Configuration
+import com.android.play.uwfilm.data.net.ssl.HttpsTrustManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 object KobisDataSourceProvider {
 
@@ -49,8 +56,15 @@ object KobisDataSourceProvider {
                 .addQueryParameter("key", Configuration.KOBIS_API_KEY)
                 .build()
 
-            chain.proceed(original.newBuilder().url(url).build())
+            if (originalHttpUrl.url().path.endsWith(".do"))
+                chain.proceed(original)
+            else
+                chain.proceed(original.newBuilder().url(url).build())
         }
+
+        val trustManagers = arrayOf<TrustManager>(HttpsTrustManager())
+        val context: SSLContext = SSLContext.getInstance("TLS")
+        context.init(null, trustManagers, SecureRandom())
 
         OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -58,6 +72,7 @@ object KobisDataSourceProvider {
             .writeTimeout(10, TimeUnit.SECONDS)
             .addNetworkInterceptor(logging)
             .addInterceptor(apiKeyInterceptor)
+            .sslSocketFactory(context.socketFactory, HttpsTrustManager())
             .build()
     }
 }

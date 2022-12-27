@@ -2,6 +2,7 @@ package com.android.play.uwfilm
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.android.play.uwfilm.data.movie.Movies
@@ -16,10 +17,14 @@ class SplashScreenActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             Movies().fetchDailyBoxOfficeList().onSuccess { boxOfficeList ->
-                UWFilmApplication.getInstance().boxOfficeList = boxOfficeList
-                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
-                finish()
+                // need movie poster data
+                // need genre data
+                // need age data
+//                UWFilmApplication.getInstance().boxOfficeList = boxOfficeList
+//                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+//                finish()
             }.onFailure { e ->
+                Log.e("TEST", e.toString())
                 toast(e.message ?: "알수없는 오류!")
             }
         }

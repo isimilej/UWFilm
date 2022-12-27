@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.android.play.uwfilm.R
 import com.android.play.uwfilm.UWFilmApplication
-import com.android.play.uwfilm.data.movie.entity.BoxOffice
+import com.android.play.uwfilm.data.movie.Movies
 import com.android.play.uwfilm.databinding.FragmentBoxOfficeBinding
+import kotlinx.coroutines.launch
 
 class BoxOfficeFragment : Fragment() {
 
@@ -32,13 +34,20 @@ class BoxOfficeFragment : Fragment() {
         }
         binding.boxOffices.adapter = adapter
 
-
         binding.refreshLayout.setOnRefreshListener {
             binding.refreshLayout.isRefreshing = false
         }
 
         Log.e("BOX-OFFICE-BoxOfficeFragment", "${UWFilmApplication.getInstance().boxOfficeList}")
         adapter.update(UWFilmApplication.getInstance().boxOfficeList)
+
+        lifecycleScope.launch {
+            UWFilmApplication.getInstance().boxOfficeList.forEach { boxOffice ->
+                var movie = Movies().fetchMovieInformation(boxOffice.movieCode)
+//                boxOffice.poster = movie.thumb
+                adapter.notifyDataSetChanged()
+            }
+        }
 
 //        lifecycleScope.launch {
 //            try {

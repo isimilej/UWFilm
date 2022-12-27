@@ -35,7 +35,7 @@
             android:shadowDx="1.0"
             android:shadowDy="1.0"
             android:gravity="start|center_vertical"
-            android:text="@{boxoffice.ranking}"
+            android:text="@{boxoffice.rank}"
             android:textColor="#ffffff"
             android:textSize="42dp"
             android:textStyle="bold|italic"

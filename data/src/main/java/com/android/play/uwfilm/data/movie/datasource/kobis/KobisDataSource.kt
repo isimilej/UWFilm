@@ -3,12 +3,15 @@ package com.android.play.uwfilm.data.movie.datasource.kobis
 import android.util.Log
 import com.android.play.uwfilm.data.movie.MovieDataSource
 import com.android.play.uwfilm.data.movie.Trailer
+import com.android.play.uwfilm.data.movie.datasource.kobis.dto.DailyBoxOffice
+import com.android.play.uwfilm.data.movie.datasource.kobis.dto.DailyMainBoxOffice
 import com.android.play.uwfilm.data.movie.entity.BoxOffice
 import com.android.play.uwfilm.data.movie.entity.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+
 
 class KobisDataSource : MovieDataSource {
 
@@ -17,29 +20,29 @@ class KobisDataSource : MovieDataSource {
     }
 
     override suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
-        var response = service.fetchDailyBoxOfficeList(date).onFailure {
+        service.fetchBusinessDailyBoxOfficeList().onFailure {
             return Result.failure(it)
-        }
-
-        val boxOfficeList = mutableListOf<BoxOffice>()
-        response.getOrNull()?.let { result ->
-            result.faultInfo?.let {
-                return Result.failure(IllegalStateException("Fault info: ${it.errorCode}, ${it.message}"))
-            }
-            result.boxOfficeResult?.dailyBoxOfficeList?.forEach {
-                boxOfficeList.add(BoxOffice(
-                    code = it.movieCd,
-                    ranking = it.rank,
-                    title = it.movieNm,
-                    isNew = ("NEW" == it.rankOldAndNew),
-                    rankingIncrement = it.rankInten.toInt(),
-                    audienceCount = it.audiAcc.toInt(),
-                    openDate = it.openDt,
-                ))
+        }.onSuccess { lst ->
+            service.fetchDailyBoxOfficeList(lst[0].showDt).onFailure {
+                return Result.failure(it)
+            }.onSuccess { result ->
+                val boxOfficeList = joinToBoxOfficeResult(lst, result.boxOfficeResult.dailyBoxOfficeList)
+                return Result.success(boxOfficeList) // return fetchDailyBoxOfficeList function
             }
         }
+        return Result.failure(IllegalStateException("Unknown"))
+    }
 
-        return Result.success(boxOfficeList)
+    private fun joinToBoxOfficeResult(lst: List<DailyMainBoxOffice>, dailyBoxOfficeList: List<DailyBoxOffice>): List<BoxOffice> {
+        val resultList = mutableListOf<BoxOffice>()
+        lst.forEach { mainBoxOffice ->
+            dailyBoxOfficeList.find {
+                it.movieCd == mainBoxOffice.movieCd
+            }?.let { dailyBoxOffice ->
+                resultList.add(BoxOffice(movieCode = dailyBoxOffice.movieCd))
+            }
+        }
+        return resultList
     }
 
     override suspend fun fetchMovieInformation(movieCode: String): Movie {

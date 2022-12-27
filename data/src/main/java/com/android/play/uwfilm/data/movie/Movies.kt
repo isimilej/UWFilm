@@ -19,39 +19,39 @@ interface MovieDataSource {
 
 class Movies {
 
-    private val dataSource: MovieDataSource by lazy {
+    private val kobisDataSource: MovieDataSource by lazy {
         KobisDataSource()
     }
 
-    private val theMovieDbDataSource: MovieDataSource by lazy {
+    private val tmdbDataSource: MovieDataSource by lazy {
         TmdbDataSource()
-    }
-
-    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
-        return dataSource.fetchDailyBoxOfficeList(date)
     }
 
     suspend fun fetchDailyBoxOfficeList(): Result<List<BoxOffice>> {
         val yesterday = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        return dataSource.fetchDailyBoxOfficeList(yesterday)
+        return fetchDailyBoxOfficeList(yesterday)
+    }
+
+    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
+        return kobisDataSource.fetchDailyBoxOfficeList(date)
     }
 
     suspend fun fetchMovieInformation(movieCode: String): Movie {
-        return dataSource.fetchMovieInformation(movieCode)
+        return kobisDataSource.fetchMovieInformation(movieCode)
     }
 
     suspend fun fetchDetail(movieCode: String): Unit {
-        theMovieDbDataSource.fetchDetail(movieCode)
+        tmdbDataSource.fetchDetail(movieCode)
     }
 
     suspend fun search(movieName: String): Result<Movie> {
-        return theMovieDbDataSource.search(movieName)
+        return tmdbDataSource.search(movieName)
     }
 
     suspend fun fetchVideos(movieCode: String): Result<Trailer> {
-        return theMovieDbDataSource.fetchVideos(movieCode)
+        return tmdbDataSource.fetchVideos(movieCode)
     }
 
-    suspend fun fetchComingSoonList(): List<BoxOffice> = dataSource.fetchComingSoonList()
+    suspend fun fetchComingSoonList(): List<BoxOffice> = kobisDataSource.fetchComingSoonList()
 
 }

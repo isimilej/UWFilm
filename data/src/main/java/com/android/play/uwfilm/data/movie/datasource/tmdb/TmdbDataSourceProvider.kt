@@ -1,6 +1,7 @@
 package com.android.play.uwfilm.data.movie.datasource.tmdb
 
 import com.android.play.uwfilm.data.Configuration
+import com.android.play.uwfilm.data.net.ssl.HttpsTrustManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
@@ -11,7 +12,10 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
 
 object TmdbDataSourceProvider {
     inline fun <reified T> provideApi(): T {
@@ -49,12 +53,17 @@ object TmdbDataSourceProvider {
             chain.proceed(original.newBuilder().url(url).build())
         }
 
+        val trustManagers = arrayOf<TrustManager>(HttpsTrustManager())
+        val context: SSLContext = SSLContext.getInstance("TLS")
+        context.init(null, trustManagers, SecureRandom())
+
         OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .addNetworkInterceptor(logging)
             .addInterceptor(apiKeyInterceptor)
+            .sslSocketFactory(context.socketFactory, HttpsTrustManager())
             .build()
     }
 }

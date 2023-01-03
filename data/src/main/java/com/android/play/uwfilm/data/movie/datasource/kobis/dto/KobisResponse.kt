@@ -26,7 +26,7 @@ data class BoxOfficeResult(
 @Serializable
 data class DailyBoxOffice(
     val rnum: String = "", // 순번. "1"
-    val rank: String = "", // 순위. "1"
+    val rank: Int = 0, // 순위. "1"
     val rankInten: String = "", // 전일 대비 순위 증감분. "0" or "-1" or "2"
     val rankOldAndNew: String = "NEW", // 랭킹 신규 진입여부. "OLD": 기존, "NEW": 신규
     val movieCd: String = "", // 영화 대표 코드. "20112207"
@@ -40,7 +40,7 @@ data class DailyBoxOffice(
     val audiCnt: String = "", // 해당일의 관객수. "353274"
     val audiInten: String = "", // 전일 대비 관객수 증감분. "-60106"
     val audiChange: String = "", // 전일 대비 관객수 증감 비율. "-14.5"
-    val audiAcc: String = "", // 누적 관객수. "5328435" - cumulative audience
+    val audiAcc: Int = 0, // 누적 관객수. "5328435" - cumulative audience
     val scrnCnt: String = "", // 해당일자에 상영한 스크린 수. "697"
     val showCnt: String = "", // 해당 일자에 사영된 횟수. "3223"
 )

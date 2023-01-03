@@ -20,29 +20,42 @@ class KobisDataSource : MovieDataSource {
     }
 
     override suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
-        service.fetchBusinessDailyBoxOfficeList().onFailure {
-            return Result.failure(it)
-        }.onSuccess { lst ->
-            service.fetchDailyBoxOfficeList(lst[0].showDt).onFailure {
-                return Result.failure(it)
-            }.onSuccess { result ->
-                val boxOfficeList = joinToBoxOfficeResult(lst, result.boxOfficeResult.dailyBoxOfficeList)
+        val mainBoxOfficeListResult = service.getDailyMainBoxOfficeList().onSuccess { dailyMainBoxOfficeList ->
+            service.getDailyBoxOfficeList(dailyMainBoxOfficeList[0].showDt).onSuccess { response ->
+                val boxOfficeList = joinToBoxOfficeResult(dailyMainBoxOfficeList, response.boxOfficeResult.dailyBoxOfficeList)
                 return Result.success(boxOfficeList) // return fetchDailyBoxOfficeList function
+            }.onFailure { e ->
+                return Result.failure(e)
             }
         }
-        return Result.failure(IllegalStateException("Unknown"))
+        return Result.failure(mainBoxOfficeListResult.exceptionOrNull() ?: IllegalStateException("UnExpected Exception"))
     }
 
-    private fun joinToBoxOfficeResult(lst: List<DailyMainBoxOffice>, dailyBoxOfficeList: List<DailyBoxOffice>): List<BoxOffice> {
+    private fun joinToBoxOfficeResult(dailyMainBoxOfficeList: List<DailyMainBoxOffice>, dailyBoxOfficeList: List<DailyBoxOffice>): List<BoxOffice> {
         val resultList = mutableListOf<BoxOffice>()
-        lst.forEach { mainBoxOffice ->
+        dailyMainBoxOfficeList.forEach { mainBoxOffice ->
             dailyBoxOfficeList.find {
                 it.movieCd == mainBoxOffice.movieCd
             }?.let { dailyBoxOffice ->
-                resultList.add(BoxOffice(movieCode = dailyBoxOffice.movieCd))
+                //https://kobis.or.kr/common/mast/movie/2022/11/thumb_x289/thn_87e132235b634767b9c22e8483cfbba7.jpg
+                resultList.add(BoxOffice(
+                    movieCode = dailyBoxOffice.movieCd,
+                    rank = dailyBoxOffice.rank,
+                    title = dailyBoxOffice.movieNm, // 박스 오피스 제목
+                    isNew = "NEW" == dailyBoxOffice.rankOldAndNew,
+                    audienceCount = dailyBoxOffice.audiAcc,
+                    openDate = dailyBoxOffice.openDt,
+                    watchGrade = mainBoxOffice.watchGradeNm,
+                    genre = mainBoxOffice.genre,
+                    poster = getPath(mainBoxOffice.thumbUrl, 289)))
             }
         }
         return resultList
+    }
+
+    private fun getPath(url: String, size: Int): String {
+        var index = url.lastIndexOf("/thumb")
+        return "https://kobis.or.kr" + url.substring(0 until index) + "/thumb_x${size}" + url.substring(index + "/thumb".length)
     }
 
     override suspend fun fetchMovieInformation(movieCode: String): Movie {

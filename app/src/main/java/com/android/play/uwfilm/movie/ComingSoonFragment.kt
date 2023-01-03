@@ -23,9 +23,9 @@ class ComingSoonFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coming_soon, container, false)
 
-        lifecycleScope.launch {
-            var movies = Movies().fetchComingSoonList()
-        }
+//        lifecycleScope.launch {
+//            var movies = Movies().fetchComingSoonList()
+//        }
 
         return binding.root
     }

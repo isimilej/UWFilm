@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.play.uwfilm.data.movie.entity.BoxOffice
 import com.android.play.uwfilm.databinding.ItemMovieBinding
 import com.bumptech.glide.Glide
+import java.text.DecimalFormat
 
 class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -36,13 +37,21 @@ class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<Mo
     }
 
     inner class ViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: BoxOffice) {
-            binding.boxoffice = item
-            Glide.with(binding.root).load(item.poster).into(binding.thumb)
+        fun bind(boxOffice: BoxOffice) {
+            binding.boxoffice = boxOffice
+            binding.ranking.text = boxOffice.rank.toString()
+            //https://kobis.or.kr/common/mast/movie/2022/11/87e132235b634767b9c22e8483cfbba7.jpg
+            //https://kobis.or.kr/common/mast/movie/2022/11/thumb_x289/thn_87e132235b634767b9c22e8483cfbba7.jpg
+            Glide.with(binding.root).load(boxOffice.poster).into(binding.thumb)
+            binding.grade.text = boxOffice.watchGrade
+            binding.audience.text = DecimalFormat("#,###").format(boxOffice.audienceCount)
+            binding.openDate.text = boxOffice.openDate
+            binding.genre.text = boxOffice.genre
+
             binding.root.setOnClickListener {
                 Log.e("", "Clicked!!")
                 itemClickListener?.let {
-                    it.onClick(item.movieCode)
+                    it.onClick(boxOffice.movieCode)
                 }
                 // change select item..
             }

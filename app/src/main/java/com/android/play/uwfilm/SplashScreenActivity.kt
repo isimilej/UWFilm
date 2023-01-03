@@ -17,15 +17,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             Movies().fetchDailyBoxOfficeList().onSuccess { boxOfficeList ->
-                // need movie poster data
-                // need genre data
-                // need age data
-//                UWFilmApplication.getInstance().boxOfficeList = boxOfficeList
-//                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
-//                finish()
+                UWFilmApplication.getInstance().boxOfficeList = boxOfficeList
+                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+                finish()
             }.onFailure { e ->
-                Log.e("TEST", e.toString())
-                toast(e.message ?: "알수없는 오류!")
+                toast(e)
             }
         }
     }

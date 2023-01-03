@@ -35,7 +35,6 @@
             android:shadowDx="1.0"
             android:shadowDy="1.0"
             android:gravity="start|center_vertical"
-            android:text="@{boxoffice.rank}"
             android:textColor="#ffffff"
             android:textSize="42dp"
             android:textStyle="bold|italic"
@@ -139,8 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                tools:text="ALL"
-                android:text=""
+                tools:text="전체관람가"
                 app:layout_constraintStart_toEndOf="@id/thumb_card"
                 app:layout_constraintTop_toBottomOf="@id/title"/>
 
@@ -150,7 +148,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 tools:text="899,900"
-                android:text="899,900"
                 app:layout_constraintStart_toEndOf="@id/thumb_card"
                 app:layout_constraintTop_toBottomOf="@id/grade"/>
 
@@ -160,9 +157,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 tools:text="2022-11-30"
-                android:text="@{boxoffice.openDate}"
                 app:layout_constraintStart_toEndOf="@id/thumb_card"
                 app:layout_constraintTop_toBottomOf="@id/audience"/>
+
+            <TextView
+                android:id="@+id/genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                tools:text="드라마, 액션"
+                app:layout_constraintStart_toEndOf="@id/thumb_card"
+                app:layout_constraintTop_toBottomOf="@id/open_date"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

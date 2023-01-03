@@ -15,17 +15,14 @@ class KobisCall<T>(private val call: Call<T>) : Call<Result<T>> {
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
-                            val faultInfo = (body as? KobisResponse)?.faultInfo
-                            if (faultInfo != null) {
+                            (body as? KobisResponse)?.faultInfo?.let { fault ->
                                 callback.onResponse(
                                     this@KobisCall,
                                     Response.success(
-                                        Result.failure(IllegalStateException("Fault info: ${faultInfo.errorCode}, ${faultInfo.message}"))
+                                        Result.failure(IllegalStateException("Fault info: ${fault.errorCode}, ${fault.message}"))
                                     )
                                 )
-                            } else {
-                                callback.onResponse(this@KobisCall, Response.success(Result.success(body)))
-                            }
+                            } ?: callback.onResponse(this@KobisCall, Response.success(Result.success(body)))
                         } else {
                             callback.onResponse(
                                 this@KobisCall, Response.success(Result.failure(IllegalStateException("response body is empty(null).")))

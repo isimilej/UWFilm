@@ -1,11 +1,13 @@
-package com.android.play.uwfilm
+package com.android.play.uwfilm.data
 
 import android.app.Application
 import com.android.play.uwfilm.data.movie.entity.BoxOffice
+import com.android.play.uwfilm.data.movie.entity.Movie
 
 class UWFilmApplication: Application() {
 
     var boxOfficeList: List<BoxOffice> = listOf()
+    var movieList: List<Movie> = listOf()
 
     init {
         instance = this
@@ -17,5 +19,7 @@ class UWFilmApplication: Application() {
             return instance as UWFilmApplication
         }
     }
+
+    fun findKobisMovie(kobisMovieCode: String) = movieList.find { it.kobisMovieCode == kobisMovieCode }
 
 }

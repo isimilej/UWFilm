@@ -49,4 +49,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "com.facebook.shimmer:shimmer:0.5.0"
+
+//    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:1.7.0'
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
 }

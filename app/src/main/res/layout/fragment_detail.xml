@@ -6,8 +6,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".movie.DetailFragment">
-        
+        tools:context=".movie.DetailFragment"
+        android:background="@color/background">
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -17,160 +18,133 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ImageView
+                    android:id="@+id/poster"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/bugdroid"
+                    android:adjustViewBounds="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/poster"
+                    app:layout_constraintBottom_toBottomOf="@id/poster"
+                    android:background="@drawable/poster_gradient_shape" />
+
+                <!-- base information -->
+                <LinearLayout
+                    android:id="@+id/base_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/poster"
+                    app:layout_constraintBottom_toBottomOf="@id/poster"
+                    app:layout_constraintVertical_bias="0.7"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="올빼미"
+                        android:textSize="32dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="Back" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <ImageView
-                    android:id="@+id/thumb"
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:scaleType="centerCrop" />
-                
-                <Button
-                    android:id="@+id/btn_play"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="48dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- detail -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/thumb"
-                    android:background="#fafafa">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="2022.12.14 개봉 • 132분"
+                        android:textSize="16dp"
+                        android:textColor="@color/content"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="올빼미 | 15세 이상 관람가 | " />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- story -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/synopsis_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/thumb"
-                    android:background="#f0f0f0">
-
-                    <TextView
-                        android:id="@+id/synopsis"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요." />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- screen shot -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/synopsis_layout">
+                        android:text="12세이상관람가 • 액션,어드벤처,SF,스릴러"
+                        android:textSize="16dp"
+                        android:textColor="@color/content"/>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:orientation="vertical">
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--1--" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="12dp"
+                            android:src="@drawable/for_dx_white" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--2--" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="12dp"
+                            android:src="@drawable/imax_white" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--3--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--4--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--5--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--6--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--7--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--8--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--9--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="--10--" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:gravity="center"
-                            android:text="==Final==" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="12dp"
+                            android:src="@drawable/screenx_white" />
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <!-- overview -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/overview_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/base_information_layout"
+                    android:layout_marginTop="24dp"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp">
+
+                    <TextView
+                        android:id="@+id/overview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요.영화나 드라마 따위의 간단한 줄거리나 개요..."
+                        android:textSize="16dp"
+                        android:textColor="@color/content" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.exoplayer2.ui.PlayerView
+                    android:id="@+id/player"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:background="@color/black"
+                    app:auto_show="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/overview_layout"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="18dp"
+                    app:resize_mode="fixed_width"
+                    app:surface_type="surface_view"
+                    app:use_controller="true"
+                    app:use_artwork="true" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/still_cut_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/player"
+                    android:orientation="vertical"
+                    app:spanCount="2"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

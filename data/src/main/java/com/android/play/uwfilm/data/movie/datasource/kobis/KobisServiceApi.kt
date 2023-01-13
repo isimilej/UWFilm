@@ -12,9 +12,4 @@ interface KobisServiceApi {
 
     @GET("/kobis/business/main/searchMainDailyBoxOffice.do")
     suspend fun getDailyMainBoxOfficeList(): Result<List<DailyMainBoxOffice>>
-    // fetchDailyBoxOfficeListOnKobisMainPage
-
-    @GET("/kobisopenapi/webservice/rest/movie/searchMovieInfo.json")
-    suspend fun fetchMovieInformation(@Query("movieCd") movieCode: String): Response<String>
-
 }

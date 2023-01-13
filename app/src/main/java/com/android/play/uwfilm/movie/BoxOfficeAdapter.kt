@@ -1,6 +1,5 @@
 package com.android.play.uwfilm.movie
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,10 +8,10 @@ import com.android.play.uwfilm.databinding.ItemMovieBinding
 import com.bumptech.glide.Glide
 import java.text.DecimalFormat
 
-class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class BoxOfficeAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<BoxOfficeAdapter.ViewHolder>() {
 
     fun interface ItemClickListener {
-        fun onClick(movieCode: String)
+        fun onClick(movieCode: String, movieName: String)
     }
     private var itemClickListener: ItemClickListener? = null
 
@@ -40,8 +39,6 @@ class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<Mo
         fun bind(boxOffice: BoxOffice) {
             binding.boxoffice = boxOffice
             binding.ranking.text = boxOffice.rank.toString()
-            //https://kobis.or.kr/common/mast/movie/2022/11/87e132235b634767b9c22e8483cfbba7.jpg
-            //https://kobis.or.kr/common/mast/movie/2022/11/thumb_x289/thn_87e132235b634767b9c22e8483cfbba7.jpg
             Glide.with(binding.root).load(boxOffice.poster).into(binding.thumb)
             binding.grade.text = boxOffice.watchGrade
             binding.audience.text = DecimalFormat("#,###").format(boxOffice.audienceCount)
@@ -49,9 +46,8 @@ class MovieAdapter(private var items: List<BoxOffice>) : RecyclerView.Adapter<Mo
             binding.genre.text = boxOffice.genre
 
             binding.root.setOnClickListener {
-                Log.e("", "Clicked!!")
                 itemClickListener?.let {
-                    it.onClick(boxOffice.movieCode)
+                    it.onClick(boxOffice.kobisMovieCode, boxOffice.title)
                 }
                 // change select item..
             }

@@ -1,5 +1,6 @@
 package com.android.play.uwfilm.data.movie
 
 data class Trailer(
-    val key: String? = null
+    val key: String = "",
+    val title: String = "",
 )

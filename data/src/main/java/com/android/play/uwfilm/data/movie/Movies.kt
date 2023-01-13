@@ -4,18 +4,19 @@ import com.android.play.uwfilm.data.movie.datasource.kobis.KobisDataSource
 import com.android.play.uwfilm.data.movie.datasource.tmdb.TmdbDataSource
 import com.android.play.uwfilm.data.movie.entity.BoxOffice
 import com.android.play.uwfilm.data.movie.entity.Movie
+import com.android.play.uwfilm.data.movie.entity.SearchResult
+import com.android.play.uwfilm.data.movie.entity.StillCut
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 interface MovieDataSource {
-    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>>
-    suspend fun fetchMovieInformation(movieCode: String): Movie
+    suspend fun fetchDailyBoxOfficeList(): Result<List<BoxOffice>>
+    suspend fun fetchMovieInformation(movieCode: String): Result<List<StillCut>>
     suspend fun fetchComingSoonList(): List<BoxOffice>
-    suspend fun fetchDetail(movieCode: String): Unit
-    suspend fun search(movieName: String): Result<Movie>
-    suspend fun fetchVideos(movieCode: String): Result<Trailer>
+    suspend fun fetchDetail(movieCode: String)
+    suspend fun getTrailerVideos(movieCode: String): Result<List<Trailer>>
+    suspend fun search(title: String): Result<List<SearchResult>>
 }
-
 
 class Movies {
 
@@ -28,30 +29,20 @@ class Movies {
     }
 
     suspend fun fetchDailyBoxOfficeList(): Result<List<BoxOffice>> {
-        val yesterday = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        return fetchDailyBoxOfficeList(yesterday)
+        return kobisDataSource.fetchDailyBoxOfficeList()
     }
 
-    suspend fun fetchDailyBoxOfficeList(date: String): Result<List<BoxOffice>> {
-        return kobisDataSource.fetchDailyBoxOfficeList(date)
+    suspend fun searchFromTmdb(title: String): Result<List<SearchResult>> {
+        val response = tmdbDataSource.search(title).onSuccess { return Result.success(it) }
+        return Result.failure(response.exceptionOrNull() ?: IllegalStateException("Unknown Exception"))
     }
 
-    suspend fun fetchMovieInformation(movieCode: String): Movie {
+    suspend fun getTrailerVideoList(movieId: String): Result<List<Trailer>> {
+        return tmdbDataSource.getTrailerVideos(movieId)
+    }
+
+    suspend fun getStillCutList(movieCode: String): Result<List<StillCut>> {
         return kobisDataSource.fetchMovieInformation(movieCode)
     }
-
-    suspend fun fetchDetail(movieCode: String): Unit {
-        tmdbDataSource.fetchDetail(movieCode)
-    }
-
-    suspend fun search(movieName: String): Result<Movie> {
-        return tmdbDataSource.search(movieName)
-    }
-
-    suspend fun fetchVideos(movieCode: String): Result<Trailer> {
-        return tmdbDataSource.fetchVideos(movieCode)
-    }
-
-    suspend fun fetchComingSoonList(): List<BoxOffice> = kobisDataSource.fetchComingSoonList()
 
 }

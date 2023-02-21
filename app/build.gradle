@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -55,4 +56,5 @@ dependencies {
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
 
     implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
 }

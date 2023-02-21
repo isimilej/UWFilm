@@ -35,11 +35,11 @@ class BoxOfficeFragment : Fragment() {
         var adapter = BoxOfficeAdapter(mutableListOf())
         binding.boxOffices.adapter = adapter
         adapter.update(UWFilmApplication.getInstance().boxOfficeList)
-        adapter.setItemClickListener { code, title ->
+        adapter.setItemClickListener { kobisMovieCode, title ->
             val fragment = DetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString("code", code)
-                    putString("title", title)
+                    putString(KEY_KOBIS_MOVIE_CODE, kobisMovieCode)
+                    putString(KEY_MOVIE_TITLE, title)
                 }
             }
 

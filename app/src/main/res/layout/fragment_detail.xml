@@ -119,6 +119,19 @@
                         android:textColor="@color/content" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                
+                <ImageView
+                    android:id="@+id/trailer_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/overview_layout"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="18dp"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:background="#ff0000"/>
 
                 <com.google.android.exoplayer2.ui.PlayerView
                     android:id="@+id/player"
@@ -127,14 +140,15 @@
                     android:background="@color/black"
                     app:auto_show="true"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/overview_layout"
+                    app:layout_constraintTop_toBottomOf="@id/trailer_preview"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="18dp"
                     app:resize_mode="fixed_width"
                     app:surface_type="surface_view"
                     app:use_controller="true"
-                    app:use_artwork="true" />
+                    app:use_artwork="true"
+                    android:visibility="gone"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/still_cut_recycler"
